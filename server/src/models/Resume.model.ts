@@ -6,7 +6,8 @@ export interface IResume extends Document {
   _id: Types.ObjectId;
   user: Types.ObjectId;
   originalFileName: string;
-  filePath: string;
+  fileUrl: string;
+  cloudinaryPublicId: string;
   fileSize: number;
   mimeType: string;
   extractedText: string;
@@ -18,9 +19,15 @@ export interface IResume extends Document {
 
 const resumeSchema = new Schema<IResume>(
   {
-    user: { type: Schema.Types.ObjectId, ref: "User", required: true, index: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
     originalFileName: { type: String, required: true },
-    filePath: { type: String, required: true },
+    fileUrl: { type: String, required: true },
+    cloudinaryPublicId: { type: String, required: true },
     fileSize: { type: Number, required: true },
     mimeType: { type: String, required: true },
     extractedText: { type: String, default: "" },
@@ -29,9 +36,13 @@ const resumeSchema = new Schema<IResume>(
       enum: ["uploaded", "analyzing", "analyzed", "failed"],
       default: "uploaded",
     },
-    latestAnalysis: { type: Schema.Types.ObjectId, ref: "Analysis", default: null },
+    latestAnalysis: {
+      type: Schema.Types.ObjectId,
+      ref: "Analysis",
+      default: null,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 resumeSchema.index({ user: 1, createdAt: -1 });

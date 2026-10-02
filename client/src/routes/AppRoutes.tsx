@@ -8,6 +8,7 @@ import UploadResume from "../pages/UploadResume/UploadResume";
 import NotFound from "../pages/NotFound/NotFound";
 import ProtectedRoute from "./ProtectedRoute";
 import ATSReport from "../pages/ATSReport/ATSReport";
+import TryItFree from "../pages/TryItFree/TryItFree";
 
 export default function AppRoutes() {
   return (
@@ -22,6 +23,7 @@ export default function AppRoutes() {
         <Route path="/upload" element={<UploadResume />} />
         {/* Day 4+: /resumes/:id, /resumes/:id/report */}
         <Route path="/resumes/:id/report" element={<ATSReport />} />
+        <Route path="/try" element={<TryItFree />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />

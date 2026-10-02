@@ -23,6 +23,13 @@ export default function Landing() {
         >
           Log in
         </Link>
+        // add a third link inside the existing flex gap-3 div:
+        <Link
+          to="/try"
+          className="rounded-lg border border-slate-700 px-5 py-2.5 text-sm font-medium text-slate-300 transition hover:border-slate-500"
+        >
+          Try it free
+        </Link>
       </div>
     </div>
   );

@@ -67,4 +67,7 @@ export const env = {
   aiServiceUrl: process.env.AI_SERVICE_URL || "http://localhost:8001",
 
   aiServiceTimeoutMs: Number(process.env.AI_SERVICE_TIMEOUT_MS) || 3000,
+  cloudinaryCloudName: required("CLOUDINARY_CLOUD_NAME"),
+  cloudinaryApiKey: required("CLOUDINARY_API_KEY"),
+  cloudinaryApiSecret: required("CLOUDINARY_API_SECRET"),
 };
