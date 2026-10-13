@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { UserPlus } from "lucide-react";
+import toast from "react-hot-toast";
 import UploadBox from "../../components/upload/UploadBox";
 import CircularScore from "../../components/charts/CircularScore";
 import ProgressBar from "../../components/charts/ProgressBar";
+import Button from "../../components/ui/Button";
+import Card from "../../components/ui/Card";
+import LoadingState from "../../components/ui/LoadingState";
 import { analyzeGuestResumeRequest } from "../../api/publicAnalysis.api";
 
 const SECTION_MAX: Record<string, number> = {
@@ -25,22 +30,21 @@ export default function TryItFree() {
     try {
       const data = await analyzeGuestResumeRequest(file);
       setResult(data);
+      toast.success("Analysis complete");
     } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          "Something went wrong. Please try again.",
-      );
+      const message =
+        err.response?.data?.message || "Something went wrong. Please try again.";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="px-6 py-10 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-semibold mb-2">
-        Try it free — no account needed
-      </h1>
-      <p className="text-slate-400 text-sm mb-6">
+    <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
+      <h1 className="mb-2 text-2xl font-semibold">Try it free — no account needed</h1>
+      <p className="mb-6 text-sm text-slate-400">
         This result won&apos;t be saved.{" "}
         <Link to="/register" className="text-cyan-400 hover:underline">
           Sign up
@@ -50,20 +54,30 @@ export default function TryItFree() {
 
       {!result && (
         <>
-          {error && <p className="mb-4 text-sm text-red-400">{error}</p>}
+          {error && (
+            <p
+              role="alert"
+              className="mb-4 text-sm text-red-400 bg-red-950/40 border border-red-900 rounded-lg px-3 py-2"
+            >
+              {error}
+            </p>
+          )}
           <UploadBox onFileSelected={handleFile} disabled={loading} />
-          {loading && <p className="mt-4 text-sm text-slate-400">Analyzing…</p>}
+          {loading && <LoadingState message="Analyzing…" className="py-8" />}
         </>
       )}
 
       {result && (
         <div className="space-y-6">
-          <div className="flex items-center gap-6 rounded-2xl border border-slate-800 bg-slate-900/40 p-6">
+          <Card
+            data-aos="fade-up"
+            className="flex flex-col items-center gap-5 text-center sm:flex-row sm:gap-6 sm:text-left"
+          >
             <CircularScore score={result.overallScore} />
             <p className="text-slate-300">{result.summary}</p>
-          </div>
+          </Card>
 
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-6 space-y-4">
+          <Card data-aos="fade-up" className="space-y-4">
             {Object.entries(result.sectionScores).map(([key, value]) => (
               <ProgressBar
                 key={key}
@@ -72,15 +86,16 @@ export default function TryItFree() {
                 max={SECTION_MAX[key] ?? 10}
               />
             ))}
-          </div>
+          </Card>
 
           <div className="text-center">
-            <Link
+            <Button
               to="/register"
-              className="inline-block rounded-lg bg-gradient-to-r from-cyan-500 to-violet-500 px-5 py-2.5 text-sm font-medium text-white"
+              size="lg"
+              leftIcon={<UserPlus className="h-4 w-4" aria-hidden="true" />}
             >
               Sign up to save this and analyze more resumes
-            </Link>
+            </Button>
           </div>
         </div>
       )}

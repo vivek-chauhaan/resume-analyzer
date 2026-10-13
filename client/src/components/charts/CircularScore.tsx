@@ -1,3 +1,6 @@
+import { useCountUp } from "../../hooks/useCountUp";
+import { useMounted } from "../../hooks/useMounted";
+
 interface CircularScoreProps {
   score: number; // 0-100
   size?: number;
@@ -17,9 +20,17 @@ export default function CircularScore({ score, size = 140, label = "ATS Score" }
   const clamped = Math.max(0, Math.min(100, score));
   const offset = circumference - (clamped / 100) * circumference;
 
+  const mounted = useMounted();
+  const displayScore = useCountUp(clamped, 1000);
+
   return (
-    <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
-      <svg width={size} height={size} className="-rotate-90">
+    <div
+      role="img"
+      aria-label={`${label}: ${clamped} out of 100`}
+      className="relative inline-flex shrink-0 items-center justify-center"
+      style={{ width: size, height: size }}
+    >
+      <svg width={size} height={size} className="-rotate-90" aria-hidden="true">
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -36,12 +47,12 @@ export default function CircularScore({ score, size = 140, label = "ATS Score" }
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          className={`${colorClass(clamped)} transition-all duration-700`}
+          strokeDashoffset={mounted ? offset : circumference}
+          className={`${colorClass(clamped)} transition-all duration-1000 ease-out`}
         />
       </svg>
       <div className="absolute text-center">
-        <p className="text-3xl font-bold text-slate-100">{clamped}</p>
+        <p className="text-3xl font-bold text-slate-100">{displayScore}</p>
         <p className="text-xs text-slate-500">{label}</p>
       </div>
     </div>

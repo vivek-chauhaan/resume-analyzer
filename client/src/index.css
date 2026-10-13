@@ -1,3 +1,91 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------- Motion + decoration helpers (no Tailwind config changes needed) ---------- */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.12); }
+  66% { transform: translate(-25px, 25px) scale(0.95); }
+}
+@keyframes gradient-x {
+  to { background-position: 200% center; }
+}
+@keyframes gradient-xy {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+@keyframes shine {
+  from { transform: translateX(-150%) skewX(-20deg); }
+  to { transform: translateX(450%) skewX(-20deg); }
+}
+
+@layer utilities {
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 72%);
+    mask-image: radial-gradient(ellipse at center, black 25%, transparent 72%);
+  }
+  .text-gradient-animated {
+    background-image: linear-gradient(90deg, #22d3ee, #8b5cf6, #e879f9, #22d3ee);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradient-x 6s linear infinite;
+  }
+  .animate-float { animation: float 6s ease-in-out infinite; }
+  .animate-blob { animation: blob 16s ease-in-out infinite; }
+  .animate-gradient-xy { animation: gradient-xy 10s ease infinite; }
+  .animate-fade-up { animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+  .animate-page-in { animation: page-in 0.45s ease-out backwards; }
+  .animate-shimmer { animation: shimmer 2s linear infinite; }
+  .animate-shine { animation: shine 0.9s ease-out; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-blob,
+  .animate-gradient-xy,
+  .animate-fade-up,
+  .animate-page-in,
+  .animate-shimmer,
+  .animate-shine,
+  .text-gradient-animated {
+    animation: none !important;
+  }
+}
