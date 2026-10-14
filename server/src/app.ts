@@ -13,7 +13,7 @@ import publicAnalysisRoutes from "./routes/publicAnalysis.routes";
 
 export function createApp(): Application {
   const app = express();
-
+  app.set("trust proxy", 1);
   // add this above the route mounts:
   const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes

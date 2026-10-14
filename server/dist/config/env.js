@@ -1,0 +1,58 @@
+"use strict";
+// function required(key: string): string {
+//   const value = process.env[key];
+//   if (!value) {
+//     throw new Error(`Missing required env var: ${key}`);
+//   }
+//   return value;
+// }
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.env = void 0;
+// // add this new function, right after required():
+// function requiredSecret(key: string, minLength: number): string {
+//   const value = required(key);
+//   if (value.length < minLength) {
+//     throw new Error(`${key} must be at least ${minLength} characters — use a long random string`);
+//   }
+//   return value;
+// }
+// export const env = {
+//   nodeEnv: process.env.NODE_ENV || "development",
+//   port: Number(process.env.PORT) || 5000,
+//   mongoUri: required("MONGO_URI"),
+//   jwtSecret: requiredSecret("JWT_SECRET", 32), // changed from required("JWT_SECRET")
+//   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "7d",
+//   clientUrl: process.env.CLIENT_URL || "http://localhost:5173",
+//   maxUploadMb: Number(process.env.MAX_UPLOAD_MB) || 5,
+//   aiServiceUrl: process.env.AI_SERVICE_URL || "http://localhost:8001",
+//   aiServiceTimeoutMs: Number(process.env.AI_SERVICE_TIMEOUT_MS) || 3000,
+// };
+require("dotenv/config");
+function required(key) {
+    const value = process.env[key];
+    if (!value) {
+        throw new Error(`Missing required env var: ${key}`);
+    }
+    return value;
+}
+function requiredSecret(key, minLength) {
+    const value = required(key);
+    if (value.length < minLength) {
+        throw new Error(`${key} must be at least ${minLength} characters — use a long random string`);
+    }
+    return value;
+}
+exports.env = {
+    nodeEnv: process.env.NODE_ENV || "development",
+    port: Number(process.env.PORT) || 5000,
+    mongoUri: required("MONGO_URI"),
+    jwtSecret: requiredSecret("JWT_SECRET", 32),
+    jwtExpiresIn: process.env.JWT_EXPIRES_IN || "7d",
+    clientUrl: process.env.CLIENT_URL || "http://localhost:5173",
+    maxUploadMb: Number(process.env.MAX_UPLOAD_MB) || 5,
+    aiServiceUrl: process.env.AI_SERVICE_URL || "http://localhost:8001",
+    aiServiceTimeoutMs: Number(process.env.AI_SERVICE_TIMEOUT_MS) || 3000,
+    cloudinaryCloudName: required("CLOUDINARY_CLOUD_NAME"),
+    cloudinaryApiKey: required("CLOUDINARY_API_KEY"),
+    cloudinaryApiSecret: required("CLOUDINARY_API_SECRET"),
+};
